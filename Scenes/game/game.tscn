@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://b0mtry81751y8"]
+
+[ext_resource type="PackedScene" uid="uid://cplk5tgvw15lp" path="res://Scenes/wall/wall.tscn" id="1_na1pb"]
+[ext_resource type="Script" path="res://Scenes/game/game.gd" id="1_oed8u"]
+[ext_resource type="PackedScene" uid="uid://dwou0x104aj4p" path="res://Scenes/paddle/player.tscn" id="2_dnqw2"]
+[ext_resource type="PackedScene" uid="uid://dwd48u6cule3o" path="res://Scenes/paddle/enemy.tscn" id="3_xrudp"]
+[ext_resource type="PackedScene" uid="uid://o1nhqxbqvdr" path="res://Scenes/ball/ball.tscn" id="4_84r8i"]
+[ext_resource type="PackedScene" uid="uid://bbx4ffmc6lkm6" path="res://Scenes/edge/edge.tscn" id="6_s3qsi"]
+[ext_resource type="PackedScene" uid="uid://elooshe4rkp8" path="res://Scenes/ui/ui.tscn" id="7_388pi"]
+[ext_resource type="Texture2D" uid="uid://c0wyq8g4fujw2" path="res://Sprites/dot.png" id="8_tqrwt"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_oed8u")
+metadata/_edit_vertical_guides_ = [427.0]
+metadata/_edit_horizontal_guides_ = [240.0]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(427, 240)
+zoom = Vector2(0.85, 0.85)
+
+[node name="Walls" type="Node" parent="."]
+
+[node name="WallTop" parent="Walls" instance=ExtResource("1_na1pb")]
+position = Vector2(427, 2.08165e-12)
+rotation = 1.5708
+scale = Vector2(1, 3.4)
+
+[node name="WallBottom" parent="Walls" instance=ExtResource("1_na1pb")]
+position = Vector2(427, 480)
+rotation = 1.5708
+scale = Vector2(1, 3.4)
+
+[node name="Line2D" type="Line2D" parent="."]
+texture_repeat = 2
+position = Vector2(427, 2.08165e-12)
+points = PackedVector2Array(0, 0, 2.08165e-12, 480)
+texture = ExtResource("8_tqrwt")
+texture_mode = 1
+
+[node name="Enemy" parent="." node_paths=PackedStringArray("ball", "wallTop", "wallBottom", "camera") instance=ExtResource("3_xrudp")]
+position = Vector2(829, 240)
+ball = NodePath("../Ball")
+wallTop = NodePath("../Walls/WallTop")
+wallBottom = NodePath("../Walls/WallBottom")
+camera = NodePath("../Camera2D")
+
+[node name="Player" parent="." node_paths=PackedStringArray("wallTop", "wallBottom", "camera") instance=ExtResource("2_dnqw2")]
+position = Vector2(25, 240)
+wallTop = NodePath("../Walls/WallTop")
+wallBottom = NodePath("../Walls/WallBottom")
+camera = NodePath("../Camera2D")
+
+[node name="Ball" parent="." instance=ExtResource("4_84r8i")]
+position = Vector2(427, 240)
+
+[node name="EdgeLeft" parent="." instance=ExtResource("6_s3qsi")]
+position = Vector2(-80, 240)
+
+[node name="EdgeRight" parent="." instance=ExtResource("6_s3qsi")]
+position = Vector2(934, 240)
+rotation = 3.14159
+
+[node name="UI" parent="." instance=ExtResource("7_388pi")]
